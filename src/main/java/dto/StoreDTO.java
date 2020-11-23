@@ -15,7 +15,7 @@ public class StoreDTO {
 
     AddressDTO address;
     String brand;
-    List<String> coordinates;
+   // List<String> coordinates;
     String name;
 
     public StoreDTO(AddressDTO address, String brand, List<String> coordinates, String name) {
@@ -41,14 +41,7 @@ public class StoreDTO {
         this.brand = brand;
     }
 
-    public List<String> getCoordinates() {
-        return coordinates;
-    }
-
-    public void setCoordinates(List<String> coordinates) {
-        this.coordinates = coordinates;
-    }
-
+  
     public String getName() {
         return name;
     }

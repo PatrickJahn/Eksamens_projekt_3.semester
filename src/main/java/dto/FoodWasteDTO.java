@@ -5,6 +5,8 @@
  */
 package dto;
 
+import java.util.List;
+
 /**
  *
  * @author Madsj
@@ -12,6 +14,12 @@ package dto;
 public class FoodWasteDTO {
 
     StoreDTO store;
+    List<ClearanceDTO> clearances;
+
+    public FoodWasteDTO(StoreDTO store, List<ClearanceDTO> clearances) {
+        this.store = store;
+        this.clearances = clearances;
+    }
 
     public StoreDTO getStore() {
         return store;
@@ -21,8 +29,15 @@ public class FoodWasteDTO {
         this.store = store;
     }
 
-    public FoodWasteDTO(StoreDTO store) {
-        this.store = store;
+    public List<ClearanceDTO> getClearances() {
+        return clearances;
     }
+
+    public void setClearances(List<ClearanceDTO> clearances) {
+        this.clearances = clearances;
+    }
+
+   
+    
     
 }

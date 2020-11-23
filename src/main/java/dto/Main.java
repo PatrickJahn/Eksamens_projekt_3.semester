@@ -7,14 +7,16 @@ package dto;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.nimbusds.jose.shaded.json.JSONArray;
+import com.nimbusds.jose.shaded.json.JSONObject;
+import com.nimbusds.jose.shaded.json.parser.JSONParser;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import java.io.IOException;
-import java.util.List;
 import utils.HttpUtils;
 import com.squareup.okhttp.Response;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -23,7 +25,7 @@ import com.squareup.okhttp.Response;
 public class Main {
     
     private static final Gson GSON = new GsonBuilder().setLenient().setPrettyPrinting().create();
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, com.nimbusds.jose.shaded.json.parser.ParseException {
         
         
         String token = "8e444044-04c9-45c3-a3a9-ab2724991821";
@@ -34,12 +36,20 @@ public class Main {
 
         Request request = new Request.Builder().url(url).addHeader("Content-Type" , "application/json").addHeader("Authorization", "Bearer 8e444044-04c9-45c3-a3a9-ab2724991821").build();
         Response response = client.newCall(request).execute();
-        //System.out.println(response.body().string());
         String mitRespons = response.body().string();
-        mitRespons = mitRespons.substring(1, mitRespons.length() - 1);
+       // mitRespons = mitRespons.substring(1, mitRespons.length() - 1);
             
-        System.out.println(mitRespons);
-        JsonObject jsonObject = new JsonParser().parse(mitRespons).getAsJsonObject();
-        FoodWasteDTO fwwDTO = GSON.fromJson(mitRespons, FoodWasteDTO.class);
+      
+       List<Object> obj = (List<Object>) new JSONParser().parse(mitRespons); 
+    
+       List<FoodWasteDTO> foodWasteDTOs = new ArrayList<>();
+       
+       for (Object o : obj){
+         foodWasteDTOs.add(GSON.fromJson(o.toString(), FoodWasteDTO.class)); 
+       }
+       
+       // Så skal vi bare retunere foodWasteDTOs
+      
+       
     }
 }

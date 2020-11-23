@@ -39,6 +39,12 @@ class ClearanceDTO {
         this.product = product;
     }
 
+    @Override
+    public String toString() {
+        return "ClearanceDTO{" + "offer=" + offer.getNewPrice() + ", product=" + product.getDescription() + '}';
+    }
+
+   
   
     
     
