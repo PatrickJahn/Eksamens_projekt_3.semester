@@ -80,15 +80,12 @@ public class DemoResource {
     }
     
     
-    
-    /** OBS Nedestående endpoints er til for at vise hvordan man kan hente fra andre servere OBS  **/
-    
     @GET
     @RolesAllowed({"admin","user"})
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("filmsparallel")
+    @Path("")
     public String getFromServersParallel() throws IOException, InterruptedException, ExecutionException, API_Exception {
-        return remoteFACADE.getAllFilmsParallel();
+        return "";
     }
     
      @GET
@@ -97,6 +94,6 @@ public class DemoResource {
     @Path("films")
     public String getFromServers() throws IOException, API_Exception {
 
-        return remoteFACADE.getAllFilms();
+        return "";
     }
 }

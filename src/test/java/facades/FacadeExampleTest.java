@@ -69,9 +69,8 @@ public class FacadeExampleTest {
     @Test
     public void testGetAllFilms() throws IOException, InterruptedException, ExecutionException, API_Exception {
             
-          String films = remoteFacade.getAllFilmsParallel();
-           
-        assertEquals(true, films.contains("A New Hope"), "Expects to have the movie title A New Hope");
+  
+        
     }
 
 }
