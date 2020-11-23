@@ -2,30 +2,46 @@
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 package dto;
-
-import java.util.List;
 
 /**
  *
  * @author Madsj
  */
-public class ClearanceDTO {
+class ClearanceDTO {
     
- List<OfferAndProductDTO> offerAndProductDTO;
+    OfferDTO offer; 
+    ProductDTO product;
 
-    public ClearanceDTO(List<OfferAndProductDTO> offerAndProductDTO) {
-        this.offerAndProductDTO = offerAndProductDTO;
+    public ClearanceDTO(OfferDTO offer, ProductDTO product) {
+        this.offer = offer;
+        this.product = product;
     }
 
-    public List<OfferAndProductDTO> getOfferAndProductDTO() {
-        return offerAndProductDTO;
+    public OfferDTO getOffer() {
+        return offer;
     }
 
-    public void setOfferAndProductDTO(List<OfferAndProductDTO> offerAndProductDTO) {
-        this.offerAndProductDTO = offerAndProductDTO;
+    public void setOffer(OfferDTO offer) {
+        this.offer = offer;
     }
 
- 
+    public ProductDTO getProduct() {
+        return product;
+    }
+
+    public void setProduct(ProductDTO product) {
+        this.product = product;
+    }
+
+  
+    
+    
+    
 }
+

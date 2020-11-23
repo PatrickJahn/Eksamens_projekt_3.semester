@@ -15,19 +15,16 @@ public class StoreDTO {
 
     AddressDTO address;
     String brand;
-    List<Integer> coordinates;
+    List<String> coordinates;
     String name;
 
-    public StoreDTO(AddressDTO address, String brand, List<Integer> coordinates, String name) {
+    public StoreDTO(AddressDTO address, String brand, List<String> coordinates, String name) {
         this.address = address;
         this.brand = brand;
-        this.coordinates = coordinates;
+     //   this.coordinates = coordinates;
         this.name = name;
     }
 
-    
-    
-    
     public AddressDTO getAddress() {
         return address;
     }
@@ -44,11 +41,11 @@ public class StoreDTO {
         this.brand = brand;
     }
 
-    public List<Integer> getCoordinates() {
+    public List<String> getCoordinates() {
         return coordinates;
     }
 
-    public void setCoordinates(List<Integer> coordinates) {
+    public void setCoordinates(List<String> coordinates) {
         this.coordinates = coordinates;
     }
 
@@ -59,5 +56,8 @@ public class StoreDTO {
     public void setName(String name) {
         this.name = name;
     }
-    
+
+  
 }
+    
+

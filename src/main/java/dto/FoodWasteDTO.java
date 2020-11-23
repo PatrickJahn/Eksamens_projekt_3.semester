@@ -12,15 +12,7 @@ package dto;
 public class FoodWasteDTO {
 
     StoreDTO store;
-    ClearanceDTO clearances;
 
-    public FoodWasteDTO(StoreDTO store, ClearanceDTO clearances) {
-        this.store = store;
-        this.clearances = clearances;
-    }
-
-    
-    
     public StoreDTO getStore() {
         return store;
     }
@@ -29,12 +21,8 @@ public class FoodWasteDTO {
         this.store = store;
     }
 
-    public ClearanceDTO getClearances() {
-        return clearances;
+    public FoodWasteDTO(StoreDTO store) {
+        this.store = store;
     }
-
-    public void setClearances(ClearanceDTO clearances) {
-        this.clearances = clearances;
-    }
-
+    
 }

@@ -1,6 +1,8 @@
 package utils;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -35,11 +37,35 @@ public class HttpUtils {
         //con.setRequestProperty("User-Agent", "server");
         Scanner scan = new Scanner(con.getInputStream());
         String jsonStr = null;
-        if (scan.hasNext()) {
-            jsonStr = scan.nextLine();
+        while (scan.hasNext()) {
+            jsonStr += scan.nextLine();
             
         }
         scan.close();
+        return jsonStr;
+    }
+     public static String fetchDataWithToken2(String _url, String token) throws MalformedURLException, IOException {
+        URL url = new URL(_url);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+        con.setRequestProperty("Accept", "application/json;charset=UTF-8");
+        con.setRequestProperty("Accept", "application/json");
+        con.setRequestProperty("Authorization", "bearer " + token);
+        //con.setRequestProperty("User-Agent", "server");
+        Scanner scan = new Scanner(con.getInputStream());
+        String jsonStr = null;
+        BufferedReader in = new BufferedReader(
+        new InputStreamReader(con.getInputStream()));
+        
+        String inputLine;
+        StringBuffer content = new StringBuffer();
+        while ((inputLine = in.readLine()) != null) {
+        content.append(inputLine);
+        }
+        
+        in.close();
+        scan.close();
+         
         return jsonStr;
     }
 
