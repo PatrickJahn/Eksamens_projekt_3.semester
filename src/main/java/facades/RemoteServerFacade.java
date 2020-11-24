@@ -7,7 +7,14 @@ package facades;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.nimbusds.jose.shaded.json.parser.JSONParser;
+import com.nimbusds.jose.shaded.json.parser.ParseException;
+import dto.FoodWasteDTO;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.EntityManagerFactory;
+import utils.HttpUtils;
 
 /**
  *
@@ -37,10 +44,25 @@ public class RemoteServerFacade {
     
     
     
-    // Sequntial metode til at hente film
-  
     
     
+    public List<FoodWasteDTO> getAllStoresAndOffers() throws IOException, ParseException{
+        
+        // Change to take Zip as parameter later in project. For now its just 8000
+       String url = "https://api.sallinggroup.com/v1/food-waste/?zip=8000"; 
+            
+       String mitRespons = HttpUtils.fetchDataWithToken(url);
+       
+       List<Object> obj = (List<Object>) new JSONParser().parse(mitRespons); 
+       List<FoodWasteDTO> foodWasteDTOs = new ArrayList<>();
+       
+       for (Object o : obj){
+         foodWasteDTOs.add(GSON.fromJson(o.toString(), FoodWasteDTO.class)); 
+       }
+       
+       
+          return foodWasteDTOs;
+    }
      
    
      

@@ -15,6 +15,7 @@ import com.squareup.okhttp.Request;
 import java.io.IOException;
 import utils.HttpUtils;
 import com.squareup.okhttp.Response;
+import errorhandling.API_Exception;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,21 +26,18 @@ import java.util.List;
 public class Main {
     
     private static final Gson GSON = new GsonBuilder().setLenient().setPrettyPrinting().create();
-    public static void main(String[] args) throws IOException, com.nimbusds.jose.shaded.json.parser.ParseException {
+    public static void main(String[] args) throws IOException, com.nimbusds.jose.shaded.json.parser.ParseException, API_Exception {
         
         
-        String token = "8e444044-04c9-45c3-a3a9-ab2724991821";
-        String url = "https://api.sallinggroup.com/v1/food-waste/?zip=8000";
 
-        String yoyoyo = (HttpUtils.fetchDataWithToken2(url, token));
-        OkHttpClient client = new OkHttpClient();
+        String url = "https://api.sallinggroup.com/v1/food-waste/?zip=2300";
 
-        Request request = new Request.Builder().url(url).addHeader("Content-Type" , "application/json").addHeader("Authorization", "Bearer 8e444044-04c9-45c3-a3a9-ab2724991821").build();
-        Response response = client.newCall(request).execute();
-        String mitRespons = response.body().string();
-       // mitRespons = mitRespons.substring(1, mitRespons.length() - 1);
+       
+       
+       try {
             
-      
+        String mitRespons = HttpUtils.fetchDataWithToken(url);
+       
        List<Object> obj = (List<Object>) new JSONParser().parse(mitRespons); 
     
        List<FoodWasteDTO> foodWasteDTOs = new ArrayList<>();
@@ -48,6 +46,9 @@ public class Main {
          foodWasteDTOs.add(GSON.fromJson(o.toString(), FoodWasteDTO.class)); 
        }
        
+       } catch (Exception e){
+           throw new API_Exception("No data collectet. Perhabs zip is wrong");
+       }
        // Så skal vi bare retunere foodWasteDTOs
       
        
