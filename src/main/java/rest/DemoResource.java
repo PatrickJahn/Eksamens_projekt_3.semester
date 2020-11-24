@@ -26,7 +26,7 @@ import utils.EMF_Creator;
 /**
  * @author lam@cphbusiness.dk
  */
-@Path("info")
+@Path("foodwaste")
 public class DemoResource {
     
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
@@ -85,7 +85,7 @@ public class DemoResource {
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("foodwaste")
+    @Path("postnummer")
     public String getAllFoodWaste() throws IOException, ParseException {
             
         return GSON.toJson(remoteFACADE.getAllStoresAndOffers());
