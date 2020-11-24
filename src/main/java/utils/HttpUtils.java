@@ -35,35 +35,17 @@ public class HttpUtils {
     public static String fetchDataWithToken(String _url) throws MalformedURLException, IOException {
         OkHttpClient client = new OkHttpClient();
 
-        Request request = new Request.Builder().url(_url).addHeader("Content-Type" , "application/json").addHeader("Authorization", "Bearer 8e444044-04c9-45c3-a3a9-ab2724991821").build();
+        Request request = new Request.Builder().url(_url)
+                .addHeader("Content-Type" , "application/json; charset=utf-8")
+                .addHeader("Authorization", "Bearer 8e444044-04c9-45c3-a3a9-ab2724991821")
+                .addHeader("Accept", "application/json;charset=UTF-8")
+                .build();
+       
+        
         Response response = client.newCall(request).execute();
         String jsonResponse = response.body().string();
         
         return jsonResponse;
     }
-     public static String fetchDataWithToken2(String _url, String token) throws MalformedURLException, IOException {
-        URL url = new URL(_url);
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod("GET");
-        con.setRequestProperty("Accept", "application/json;charset=UTF-8");
-        con.setRequestProperty("Accept", "application/json");
-        con.setRequestProperty("Authorization", "bearer " + token);
-        //con.setRequestProperty("User-Agent", "server");
-        Scanner scan = new Scanner(con.getInputStream());
-        String jsonStr = null;
-        BufferedReader in = new BufferedReader(
-        new InputStreamReader(con.getInputStream()));
-        
-        String inputLine;
-        StringBuffer content = new StringBuffer();
-        while ((inputLine = in.readLine()) != null) {
-        content.append(inputLine);
-        }
-        
-        in.close();
-        scan.close();
-         
-        return jsonStr;
-    }
-
+    
 }

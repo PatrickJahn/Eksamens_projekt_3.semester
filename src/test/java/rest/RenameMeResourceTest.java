@@ -148,6 +148,7 @@ public class RenameMeResourceTest {
     }
     
      @Test
+     @Disabled
     public void testFilms() throws Exception {  
               login("user_admin", "test");
         given()

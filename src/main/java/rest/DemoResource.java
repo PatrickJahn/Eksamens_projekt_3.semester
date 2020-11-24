@@ -2,6 +2,7 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.nimbusds.jose.shaded.json.parser.ParseException;
 import entities.User;
 import errorhandling.API_Exception;
 import facades.FacadeExample;
@@ -80,20 +81,15 @@ public class DemoResource {
     }
     
     
-    @GET
-    @RolesAllowed({"admin","user"})
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("")
-    public String getFromServersParallel() throws IOException, InterruptedException, ExecutionException, API_Exception {
-        return "";
-    }
     
-     @GET
-     @RolesAllowed({"admin","user"})
+    
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("films")
-    public String getFromServers() throws IOException, API_Exception {
-
-        return "";
+    @Path("foodwaste")
+    public String getAllFoodWaste() throws IOException, ParseException {
+            
+        return GSON.toJson(remoteFACADE.getAllStoresAndOffers());
     }
+
+
 }
