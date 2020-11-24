@@ -60,6 +60,7 @@ public class RemoteServerFacade {
          foodWasteDTOs.add(GSON.fromJson(o.toString(), FoodWasteDTO.class)); 
        }
        
+       // OBS MIssing error handling
        
           return foodWasteDTOs;
     }
