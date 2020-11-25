@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/PatrickJahn/Eksamens_projekt_3.semester.svg?branch=master)](https://travis-ci.org/PatrickJahn/Eksamens_projekt_3.semester)
 
+#Foodwaste
 ## CA3 - How to use
 ### Preconditions
 *In order to use this code, you should have a local developer setup + a "matching" droplet on Digital Ocean as described in the 3. semester guidelines.* 
