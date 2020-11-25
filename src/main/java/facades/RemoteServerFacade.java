@@ -49,7 +49,7 @@ public class RemoteServerFacade {
     public List<FoodWasteDTO> getAllStoresAndOffers() throws IOException, ParseException{
         
         // Change to take Zip as parameter later in project. For now its just 8000
-       String url = "https://api.sallinggroup.com/v1/food-waste/?zip=2100"; 
+       String url = "https://api.sallinggroup.com/v1/food-waste/?zip=4000"; 
             
        String mitRespons = HttpUtils.fetchDataWithToken(url);
        
