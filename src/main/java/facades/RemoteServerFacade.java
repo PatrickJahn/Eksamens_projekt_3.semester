@@ -50,6 +50,7 @@ public class RemoteServerFacade {
     public List<FoodWasteDTO> getAllStoresAndOffers() throws IOException, ParseException, API_Exception{
         
         // Change to take Zip as parameter later in project. For now its just 8000
+
         
         try {
        
@@ -59,6 +60,7 @@ public class RemoteServerFacade {
        
            List<Object> obj = (List<Object>) new JSONParser().parse(mitRespons); 
            List<FoodWasteDTO> foodWasteDTOs = new ArrayList<>();
+
             
             for (Object o : obj){
                 foodWasteDTOs.add(GSON.fromJson(o.toString(), FoodWasteDTO.class)); 
