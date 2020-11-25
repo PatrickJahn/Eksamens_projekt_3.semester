@@ -10,6 +10,7 @@ import com.google.gson.GsonBuilder;
 import com.nimbusds.jose.shaded.json.parser.JSONParser;
 import com.nimbusds.jose.shaded.json.parser.ParseException;
 import dto.FoodWasteDTO;
+import errorhandling.API_Exception;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,23 +47,34 @@ public class RemoteServerFacade {
     
     
     
-    public List<FoodWasteDTO> getAllStoresAndOffers() throws IOException, ParseException{
+    public List<FoodWasteDTO> getAllStoresAndOffers() throws IOException, ParseException, API_Exception{
         
         // Change to take Zip as parameter later in project. For now its just 8000
-       String url = "https://api.sallinggroup.com/v1/food-waste/?zip=2100"; 
+        
+        try {
+       
+           String url = "https://api.sallinggroup.com/v1/food-waste/?zip=2100"; 
             
-       String mitRespons = HttpUtils.fetchDataWithToken(url);
+           String mitRespons = HttpUtils.fetchDataWithToken(url);
        
-       List<Object> obj = (List<Object>) new JSONParser().parse(mitRespons); 
-       List<FoodWasteDTO> foodWasteDTOs = new ArrayList<>();
+           List<Object> obj = (List<Object>) new JSONParser().parse(mitRespons); 
+           List<FoodWasteDTO> foodWasteDTOs = new ArrayList<>();
+            
+            for (Object o : obj){
+                foodWasteDTOs.add(GSON.fromJson(o.toString(), FoodWasteDTO.class)); 
+                 }
+            
+           return foodWasteDTOs;
        
-       for (Object o : obj){
-         foodWasteDTOs.add(GSON.fromJson(o.toString(), FoodWasteDTO.class)); 
-       }
+        } catch (Exception err){
+            throw new API_Exception("Something went wrong. Maybe wrong zip-code");
+        }
+     
        
-       // OBS MIssing error handling
        
-          return foodWasteDTOs;
+       
+       
+          
     }
      
    

@@ -15,13 +15,13 @@ public class StoreDTO {
 
     AddressDTO address;
     String brand;
-   // List<String> coordinates;
+    List<String> coordinates;
     String name;
 
     public StoreDTO(AddressDTO address, String brand, List<String> coordinates, String name) {
         this.address = address;
         this.brand = brand;
-     //   this.coordinates = coordinates;
+        this.coordinates = coordinates;
         this.name = name;
     }
 

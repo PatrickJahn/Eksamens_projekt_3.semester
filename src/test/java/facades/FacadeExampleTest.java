@@ -1,5 +1,6 @@
 package facades;
 
+import com.nimbusds.jose.shaded.json.parser.ParseException;
 import utils.EMF_Creator;
 import entities.RenameMe;
 import errorhandling.API_Exception;
@@ -10,6 +11,7 @@ import javax.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -66,11 +68,11 @@ public class FacadeExampleTest {
     }
     
     
+    
     @Test
-    public void testGetAllFilms() throws IOException, InterruptedException, ExecutionException, API_Exception {
-            
-  
-        
+    public void testGetAllStoresAndOffers() throws IOException, API_Exception, ParseException {
+          assertTrue(remoteFacade.getAllStoresAndOffers().size() > 0);
     }
+
 
 }
