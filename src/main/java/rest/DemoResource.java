@@ -19,6 +19,7 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
 import utils.EMF_Creator;
@@ -86,9 +87,17 @@ public class DemoResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("postnummer")
-    public String getAllFoodWaste() throws IOException, ParseException {
+    public String getAllFoodWaste() throws IOException, ParseException, API_Exception {
             
         return GSON.toJson(remoteFACADE.getAllStoresAndOffers());
+    }
+    
+     @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("postnummer/{zip}")
+    public String getAllFoodWaste(@PathParam("zip")String zip) throws IOException, ParseException, API_Exception{
+            
+        return GSON.toJson(remoteFACADE.getAllStoresAndOffersByZip(zip));
     }
 
 
