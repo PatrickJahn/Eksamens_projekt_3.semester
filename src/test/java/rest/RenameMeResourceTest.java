@@ -149,7 +149,8 @@ public class RenameMeResourceTest {
     }
     
      @Test
-    public void testFilms() throws Exception {  
+      @Disabled
+    public void testPostnummer() throws Exception {  
            
         given()
                 .contentType("application/json")
