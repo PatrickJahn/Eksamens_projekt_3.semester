@@ -7,19 +7,13 @@ package facades;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dto.characterDTO;
-import dto.filmDTO;
-import dto.combinedDTO;
-import dto.planetDTO;
+import com.nimbusds.jose.shaded.json.parser.JSONParser;
+import com.nimbusds.jose.shaded.json.parser.ParseException;
+import dto.FoodWasteDTO;
 import errorhandling.API_Exception;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import javax.persistence.EntityManagerFactory;
 import utils.HttpUtils;
 
@@ -51,103 +45,63 @@ public class RemoteServerFacade {
     
     
     
-    // Sequntial metode til at hente film
-    public String getAllFilms() throws IOException, API_Exception{
+    
+    
+    public List<FoodWasteDTO> getAllStoresAndOffers() throws IOException, ParseException, API_Exception{
         
-        String filmsJson = HttpUtils.fetchData("https://swapi.dev/api/films/1/");
+        // Change to take Zip as parameter later in project. For now its just 8000
 
-        filmDTO filmsdto = GSON.fromJson(filmsJson, filmDTO.class);
         
-         List<characterDTO> allCharacter = new ArrayList(); 
-         List<planetDTO> allPlanets = new ArrayList(); 
-         
-        for (String ch : filmsdto.getCharacterUrls()){
-           String ch2 = ch.replace("http", "https");
-            String data = HttpUtils.fetchData(ch2);
-             characterDTO c = GSON.fromJson(data, characterDTO.class);
-           allCharacter.add(c);
-        }
-        
-         for (String planet : filmsdto.getPlanetUrls()){
-           String planet2 = planet.replace("http", "https");
-            String data = HttpUtils.fetchData(planet2);
-             planetDTO p = GSON.fromJson(data, planetDTO.class);
-           allPlanets.add(p);
-        }
-         
-       if (allCharacter.isEmpty() || allPlanets.isEmpty()) {
-             throw new API_Exception("Internal failure, service is down.", 400);
-         }
+        try {
        
-         combinedDTO combined = new combinedDTO(filmsdto, allCharacter, allPlanets);
-         
-        return GSON.toJson(combined);
-    }
-    
-    
-     public String getAllFilmsParallel() throws IOException, InterruptedException, ExecutionException, API_Exception{
-         
-        ExecutorService executor = Executors.newCachedThreadPool();
- 
-        String filmsJson = HttpUtils.fetchData("https://swapi.dev/api/films/1/");
+           String url = "https://api.sallinggroup.com/v1/food-waste/?zip=2100"; 
+            
+           String mitRespons = HttpUtils.fetchDataWithToken(url);
+       
+           List<Object> obj = (List<Object>) new JSONParser().parse(mitRespons); 
+           List<FoodWasteDTO> foodWasteDTOs = new ArrayList<>();
 
-        filmDTO filmsdto = GSON.fromJson(filmsJson, filmDTO.class);
-        
-         List<characterDTO> allCharacter = giveThreadsWorkGetCharacters(filmsdto.getCharacterUrls(), executor);
-         List<planetDTO> allPlanets = giveThreadsWorkGetPlanets(filmsdto.getPlanetUrls(), executor);
-        
-         
-         if (allCharacter.isEmpty() || allPlanets.isEmpty()) {
-             throw new API_Exception("Internal failure, service is down.", 400);
-         }
-         
-         combinedDTO combined = new combinedDTO(filmsdto, allCharacter, allPlanets);
-        
-        return GSON.toJson(combined);
+            
+            for (Object o : obj){
+                foodWasteDTOs.add(GSON.fromJson(o.toString(), FoodWasteDTO.class)); 
+                 }
+            
+           return foodWasteDTOs;
+       
+        } catch (Exception err){
+            throw new API_Exception("Something went wrong. Maybe wrong zip-code");
+        }
+     
     }
+     
+     
+    public List<FoodWasteDTO> getAllStoresAndOffersByZip(String zip) throws IOException, ParseException, API_Exception{
+        
+        // Change to take Zip as parameter later in project. For now its just 8000
+
+        
+        try {
+       
+           String url = "https://api.sallinggroup.com/v1/food-waste/?zip=" + zip; 
+            
+           String mitRespons = HttpUtils.fetchDataWithToken(url);
+       
+           List<Object> obj = (List<Object>) new JSONParser().parse(mitRespons); 
+           List<FoodWasteDTO> foodWasteDTOs = new ArrayList<>();
+
+            
+            for (Object o : obj){
+                foodWasteDTOs.add(GSON.fromJson(o.toString(), FoodWasteDTO.class)); 
+                 }
+            
+           return foodWasteDTOs;
+       
+        } catch (Exception err){
+            throw new API_Exception("Something went wrong. Maybe wrong zip-code");
+        }
+     
+    }
+     
+  
    
-     
-    /*
-     * Denne metode anvender en executor og futures, til at tildele threads opgaver.
-     * Tager argumenterne: urls som er en liste af alle de urls man vil hente data fra.
-     * og et ExecutorService til at håndtere trådene.
-     */
-     private List<planetDTO> giveThreadsWorkGetPlanets(List<String> urls, ExecutorService executor) throws InterruptedException, ExecutionException {
-         
-          List<Future<String>> planetFutures = new ArrayList<>();
-          List<planetDTO> allPlanets = new ArrayList<>();
-          
-          for (String url : urls){
-            Future future = executor.submit(new PlanetHandler(url));
-            planetFutures.add(future);
-        }
-             for (Future f : planetFutures){
-                 allPlanets.add((planetDTO) f.get());        
-         }
-         
-         return allPlanets;    
-     }
-     
-     
-     
-    /*
-     * Denne metode anvender en executor og futures, til at tildele threads opgaver.
-     * Tager argumenterne: urls som er en liste af alle de urls man vil hente data fra.
-     * og et ExecutorService til at håndtere trådene.
-     */
-    private List<characterDTO> giveThreadsWorkGetCharacters(List<String> urls, ExecutorService executor) throws InterruptedException, ExecutionException {
-         
-          List<Future<String>> characterFutures = new ArrayList<>();
-          List<characterDTO> allCharacters = new ArrayList<>();
-          
-          for (String url : urls){
-            Future future = executor.submit(new CharacterHandler(url));
-            characterFutures.add(future);
-        }
-             for (Future f : characterFutures){
-                 allCharacters.add((characterDTO) f.get());        
-         }
-         
-         return allCharacters;    
-     }
 }

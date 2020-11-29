@@ -9,6 +9,7 @@ import static io.restassured.RestAssured.given;
 import io.restassured.http.ContentType;
 import io.restassured.parsing.Parser;
 import java.net.URI;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.core.UriBuilder;
@@ -121,7 +122,7 @@ public class RenameMeResourceTest {
     
     @Test
     public void testServerIsUp() {
-        given().when().get("/info").then().statusCode(200);
+        given().when().get("/foodwaste").then().statusCode(200);
     }
 
     //This test assumes the database contains two rows
@@ -149,15 +150,14 @@ public class RenameMeResourceTest {
     
      @Test
     public void testFilms() throws Exception {  
-              login("user_admin", "test");
+           
         given()
                 .contentType("application/json")
                 .accept(ContentType.JSON)
-                .header("x-access-token", securityToken)
                 .when()                
-                .get("/info/filmsparallel").then()
+                .get("/foodwaste/postnummer").then()
                 .assertThat()
-                .statusCode(HttpStatus.OK_200.getStatusCode())
-                .body("title", equalTo("A New Hope"));
+                .statusCode(HttpStatus.OK_200.getStatusCode());
+                
     }
 }

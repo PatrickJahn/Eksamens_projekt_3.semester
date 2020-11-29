@@ -2,6 +2,7 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.nimbusds.jose.shaded.json.parser.ParseException;
 import entities.User;
 import errorhandling.API_Exception;
 import facades.FacadeExample;
@@ -18,6 +19,7 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
 import utils.EMF_Creator;
@@ -25,7 +27,7 @@ import utils.EMF_Creator;
 /**
  * @author lam@cphbusiness.dk
  */
-@Path("info")
+@Path("foodwaste")
 public class DemoResource {
     
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
@@ -81,22 +83,22 @@ public class DemoResource {
     
     
     
-    /** OBS Nedestående endpoints er til for at vise hvordan man kan hente fra andre servere OBS  **/
     
     @GET
-    @RolesAllowed({"admin","user"})
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("filmsparallel")
-    public String getFromServersParallel() throws IOException, InterruptedException, ExecutionException, API_Exception {
-        return remoteFACADE.getAllFilmsParallel();
+    @Path("postnummer")
+    public String getAllFoodWaste() throws IOException, ParseException, API_Exception {
+            
+        return GSON.toJson(remoteFACADE.getAllStoresAndOffers());
     }
     
      @GET
-     @RolesAllowed({"admin","user"})
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("films")
-    public String getFromServers() throws IOException, API_Exception {
-
-        return remoteFACADE.getAllFilms();
+    @Path("postnummer/{zip}")
+    public String getAllFoodWaste(@PathParam("zip")String zip) throws IOException, ParseException, API_Exception{
+            
+        return GSON.toJson(remoteFACADE.getAllStoresAndOffersByZip(zip));
     }
+
+
 }
