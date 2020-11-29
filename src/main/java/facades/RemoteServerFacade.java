@@ -101,20 +101,5 @@ public class RemoteServerFacade {
         }
      
     }
-     
-    /*
-     * Denne metode anvender en executor og futures, til at tildele threads opgaver.
-     * Tager argumenterne: urls som er en liste af alle de urls man vil hente data fra.
-     * og et ExecutorService til at håndtere trådene.
-     */
-   
-     
-     
-     
-    /*
-     * Denne metode anvender en executor og futures, til at tildele threads opgaver.
-     * Tager argumenterne: urls som er en liste af alle de urls man vil hente data fra.
-     * og et ExecutorService til at håndtere trådene.
-     */
-   
+  
 }
