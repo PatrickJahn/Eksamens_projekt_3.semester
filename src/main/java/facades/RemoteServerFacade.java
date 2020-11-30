@@ -97,7 +97,7 @@ public class RemoteServerFacade {
            return foodWasteDTOs;
        
         } catch (Exception err){
-            throw new API_Exception("Something went wrong. Maybe wrong zip-code");
+            throw new API_Exception("Something went wrong. Try another zip-code");
         }
      
     }
