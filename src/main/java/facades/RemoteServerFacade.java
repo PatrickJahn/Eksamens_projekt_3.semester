@@ -10,6 +10,7 @@ import com.google.gson.GsonBuilder;
 import com.nimbusds.jose.shaded.json.parser.JSONParser;
 import com.nimbusds.jose.shaded.json.parser.ParseException;
 import dto.FoodWasteDTO;
+import dto.VejrDTO;
 import errorhandling.API_Exception;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -78,8 +79,6 @@ public class RemoteServerFacade {
     public List<FoodWasteDTO> getAllStoresAndOffersByZip(String zip) throws IOException, ParseException, API_Exception{
         
         // Change to take Zip as parameter later in project. For now its just 8000
-
-        
         try {
        
            String url = "https://api.sallinggroup.com/v1/food-waste/?zip=" + zip; 
@@ -102,4 +101,23 @@ public class RemoteServerFacade {
      
     }
   
+    
+     public VejrDTO getWheaterFromCity(String city) throws IOException, ParseException, API_Exception{
+        
+     
+        try {
+       
+           String url = "https://vejr.eu/api.php?location="+ city +"&degree=C"; 
+            
+           String dataResponse = HttpUtils.fetchDataWithToken(url);
+       
+           VejrDTO vejret = GSON.fromJson(dataResponse, VejrDTO.class);
+            
+           return vejret;
+       
+        } catch (Exception err){
+            throw new API_Exception("Could not get wheater for city");
+        }
+     
+    }
 }
