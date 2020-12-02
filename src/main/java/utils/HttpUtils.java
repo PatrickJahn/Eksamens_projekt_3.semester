@@ -39,6 +39,7 @@ public class HttpUtils {
                 .addHeader("Content-Type" , "application/json; charset=utf-8")
                 .addHeader("Authorization", "Bearer 8e444044-04c9-45c3-a3a9-ab2724991821")
                 .addHeader("Accept", "application/json;charset=UTF-8")
+                .addHeader("charset", "UTF-8")
                 .build();
        
         

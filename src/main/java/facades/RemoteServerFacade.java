@@ -9,11 +9,17 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.nimbusds.jose.shaded.json.parser.JSONParser;
 import com.nimbusds.jose.shaded.json.parser.ParseException;
+import dto.CombinedDTO;
 import dto.FoodWasteDTO;
+import dto.VejrDTO;
 import errorhandling.API_Exception;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import javax.persistence.EntityManagerFactory;
 import utils.HttpUtils;
 
@@ -78,8 +84,6 @@ public class RemoteServerFacade {
     public List<FoodWasteDTO> getAllStoresAndOffersByZip(String zip) throws IOException, ParseException, API_Exception{
         
         // Change to take Zip as parameter later in project. For now its just 8000
-
-        
         try {
        
            String url = "https://api.sallinggroup.com/v1/food-waste/?zip=" + zip; 
@@ -101,7 +105,53 @@ public class RemoteServerFacade {
         }
      
     }
-     
   
-   
+    
+     public VejrDTO getWheaterFromCity(String city) throws IOException, ParseException, API_Exception{
+        
+    
+        try {
+       
+           String url = "https://vejr.eu/api.php?location="+ city +"&degree=C"; 
+            
+           String dataResponse = HttpUtils.fetchDataWithToken(url);
+       
+           VejrDTO vejret = GSON.fromJson(dataResponse, VejrDTO.class);
+            
+           return vejret;
+       
+        } catch (Exception err){
+            throw new API_Exception("Could not get wheater for city");
+        }
+     
+    }
+     
+     public CombinedDTO getDataFromApi(String zip, String city) throws InterruptedException, ExecutionException, API_Exception{
+         
+            String foodwasteUrl = "https://api.sallinggroup.com/v1/food-waste/?zip=" + zip; 
+            String vejrUrl = "https://vejr.eu/api.php?location="+city+"&degree=C";
+            
+          List<FoodWasteDTO> foodwasteDto = new ArrayList<>(); 
+          VejrDTO vejrDto;
+         
+         ExecutorService executor = Executors.newCachedThreadPool();
+ 
+              
+              
+              Future foodWasteFuture = executor.submit(new FoodWasteHandler(foodwasteUrl));
+              Future vejrFuture = executor.submit(new VejrHandler(vejrUrl));
+              
+              foodwasteDto = (List<FoodWasteDTO>) foodWasteFuture.get();
+              vejrDto = (VejrDTO) vejrFuture.get();
+             
+         if (foodwasteDto.isEmpty()) {
+             throw new API_Exception("Internal failure, service is down.", 400);
+         }
+         
+         CombinedDTO combined = new CombinedDTO(foodwasteDto,vejrDto);
+         
+         return combined;
+     }
+     
+     
 }
