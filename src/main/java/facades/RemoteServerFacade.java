@@ -120,4 +120,21 @@ public class RemoteServerFacade {
         }
      
     }
+     
+      /* public List<StoreOpeningHoursDTO> getOpeningHours(String zip) throws IOException, ParseException, API_Exception {
+         
+         try { 
+           String url =  "https://api.sallinggroup.com/v2/stores/?hourType=store&zip="; 
+           
+           String url2 =  "https://api.sallinggroup.com/v2/stores?fields=name,address,hours,hourType=store&zip=2100&per_page=5-H";
+          
+                   
+            }  catch (Exception err) {
+                throw new API_Exception("You waaaat"); 
+             
+         } */
+         
+     
+     
+     
 }
