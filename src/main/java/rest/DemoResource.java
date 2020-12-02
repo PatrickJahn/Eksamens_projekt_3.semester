@@ -8,6 +8,7 @@ import errorhandling.API_Exception;
 import facades.FacadeExample;
 import facades.RemoteServerFacade;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import javax.annotation.security.RolesAllowed;
@@ -88,7 +89,6 @@ public class DemoResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("postnummer")
     public String getAllFoodWaste() throws IOException, ParseException, API_Exception {
-            
         return GSON.toJson(remoteFACADE.getAllStoresAndOffers());
     }
     
@@ -96,9 +96,16 @@ public class DemoResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("postnummer/{zip}")
     public String getAllFoodWaste(@PathParam("zip")String zip) throws IOException, ParseException, API_Exception{
-            
         return GSON.toJson(remoteFACADE.getAllStoresAndOffersByZip(zip));
     }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("data/{zip}/{city}")
+    public String getData(@PathParam("zip")String zip,@PathParam("city")String city) throws IOException, ParseException, API_Exception, InterruptedException, ExecutionException{
+        return GSON.toJson(remoteFACADE.getDataFromApi(zip, city));
+    }
+
 
 
 }

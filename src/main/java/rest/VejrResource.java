@@ -53,6 +53,7 @@ public class VejrResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("by/{city}")
     public String getAllFoodWaste(@PathParam("city") String city) throws IOException, ParseException, API_Exception{
+        
         return GSON.toJson(remoteFACADE.getWheaterFromCity(city).getCurrentData());
     }
 

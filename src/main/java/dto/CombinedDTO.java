@@ -5,6 +5,8 @@
  */
 package dto;
 
+import java.util.List;
+
 /**
  *
  * @author Patrick
@@ -12,19 +14,19 @@ package dto;
 public class CombinedDTO {
     
     
-    FoodWasteDTO foodwaste;
+    List<FoodWasteDTO> foodwaste;
     VejrDataDTO vejret;
 
-    public CombinedDTO(FoodWasteDTO foodwaste, VejrDTO vejret) {
+    public CombinedDTO(  List<FoodWasteDTO> foodwaste, VejrDTO vejret) {
         this.foodwaste = foodwaste;
         this.vejret = vejret.CurrentData;
     }
 
-    public FoodWasteDTO getFoodwaste() {
+    public   List<FoodWasteDTO> getFoodwaste() {
         return foodwaste;
     }
 
-    public void setFoodwaste(FoodWasteDTO foodwaste) {
+    public void setFoodwaste(  List<FoodWasteDTO> foodwaste) {
         this.foodwaste = foodwaste;
     }
 
