@@ -115,7 +115,7 @@ public class UserFacade {
            user = em.find(User.class, username);
      
           } catch (Exception e){
-              throw new API_Exception("Could not load  favorites");
+              throw new API_Exception("Could not load favorites");
           } finally {
               em.close();
           }
@@ -123,4 +123,28 @@ public class UserFacade {
          return user.getFavoritButikker();
     }
     
+      public User removeFavorit(String username, long favID) throws API_Exception{
+        
+          EntityManager em = emf.createEntityManager();
+         Favorit favorit;
+          User user; 
+          try {
+
+          em.getTransaction().begin();
+          favorit = em.find(Favorit.class, favID);
+           user = em.find(User.class, username);
+           user.removeFavoritButik(favorit);
+          em.getTransaction().commit();
+        
+          } catch (Exception e){
+              throw new API_Exception("Could not remove from favorites. Try again later");
+          } finally {
+              em.close();
+          }
+          
+         return user;
+    }
+     
+     
+     
 }

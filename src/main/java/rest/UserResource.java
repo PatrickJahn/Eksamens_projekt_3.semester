@@ -22,6 +22,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
 import security.errorhandling.AuthenticationException;
@@ -97,7 +98,7 @@ public class UserResource {
     @RolesAllowed("user")
     public String getFavoritsForUser() throws API_Exception {
       
-      String thisuser = securityContext.getUserPrincipal().getName();
+     String thisuser = securityContext.getUserPrincipal().getName();
         
         return GSON.toJson(userFACADE.getFavorits(thisuser));
     }
@@ -118,12 +119,34 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("favorit")
+    @RolesAllowed("user")
     public String addFavoritToUser(String favorit) throws API_Exception {
-          Favorit favoritToAdd = GSON.fromJson(favorit, Favorit.class);
-          String thisuser = securityContext.getUserPrincipal().getName();
-  
+     
+           Favorit favoritToAdd = GSON.fromJson(favorit, Favorit.class);
+         String thisuser = securityContext.getUserPrincipal().getName();
+         
           User edditetUser = userFACADE.addFavoritToUser(thisuser, favoritToAdd);
-        return "{\"message\": \"Brugeren " + edditetUser.getUserName() + " er nu opdateret"+"\"}";
+      
+        return "{\"message\": \"Brugeren "  + edditetUser + " er nu opdateret"+"\"}";
+    }
+    
+    
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("favorit/remove/{id}")
+    @RolesAllowed("user")
+    public String removeFavorit(@PathParam("id") long id) throws API_Exception {
+        try {
+         
+        String thisuser = securityContext.getUserPrincipal().getName();
+         
+         userFACADE.removeFavorit(thisuser, id);
+        } catch(Exception e){
+       
+            throw new API_Exception(e.getMessage());
+        }
+        return "{\"message\": \"Brugeren er nu opdateret"+"\"}";
     }
 
 }

@@ -38,7 +38,7 @@ public class User implements Serializable {
   @ManyToMany
   private List<Role> roleList = new ArrayList<>();
   
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Favorit> favoritButikker  = new ArrayList<>();
 
   public List<String> getRolesAsStrings() {
@@ -103,6 +103,11 @@ public class User implements Serializable {
 
    public void addFavoritButikker(Favorit favoritButik) {
         this.favoritButikker.add(favoritButik);
+    }
+   
+   
+   public void removeFavoritButik(Favorit favoritButik) {
+        this.favoritButikker.remove(favoritButik);
     }
 
   
