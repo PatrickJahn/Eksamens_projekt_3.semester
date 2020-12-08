@@ -102,7 +102,7 @@ public class UserResource {
     public String setNewUser(String user) throws IOException, ParseException, API_Exception, AuthenticationException {
           User userToAdd = GSON.fromJson(user, User.class);
           User addedUser = userFACADE.addNewUser(userToAdd);
-        return "{\"msg\": \"Brugeren " + addedUser.getUserName() + " er nu oprettet"+"\"}";
+        return "{\"message\": \"Brugeren " + addedUser.getUserName() + " er nu oprettet"+"\"}";
     }
     
 
