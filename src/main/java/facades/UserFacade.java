@@ -1,7 +1,9 @@
 package facades;
 
+import entities.Favorit;
 import entities.Role;
 import entities.User;
+import errorhandling.API_Exception;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -60,7 +62,7 @@ public class UserFacade {
           User user = new User(newUser.getUserName(), newUser.getUserPass());
           List<Role> roller = new ArrayList<>();
           roller.add(new Role("user"));
-     
+           user.addFavoritButikker(new Favorit("2200", "test"));
           user.setRoleList(roller);
          
         try {
@@ -79,6 +81,46 @@ public class UserFacade {
         return user;
 
         
+    }
+    
+    
+    public User addFavoritToUser(String username, Favorit favorit) throws API_Exception{
+        
+          EntityManager em = emf.createEntityManager();
+         
+          User user; 
+          try {
+
+          em.getTransaction().begin();
+           user = em.find(User.class, username);
+           user.addFavoritButikker(favorit);
+          em.getTransaction().commit();
+        
+          } catch (Exception e){
+              throw new API_Exception("Could not save to faveorites");
+          } finally {
+              em.close();
+          }
+          
+         return user;
+    }
+     public List<Favorit> getFavorits(String username) throws API_Exception{
+        
+          EntityManager em = emf.createEntityManager();
+         
+          User user; 
+          try {
+
+     
+           user = em.find(User.class, username);
+     
+          } catch (Exception e){
+              throw new API_Exception("Could not load  favorites");
+          } finally {
+              em.close();
+          }
+          
+         return user.getFavoritButikker();
     }
     
 }

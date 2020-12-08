@@ -2,17 +2,14 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.nimbusds.jose.shaded.json.parser.ParseException;
+import entities.Favorit;
 import entities.User;
 import errorhandling.API_Exception;
 import facades.FacadeExample;
-import facades.RemoteServerFacade;
 import facades.UserFacade;
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -23,8 +20,8 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
 import security.errorhandling.AuthenticationException;
@@ -94,17 +91,39 @@ public class UserResource {
     }
     
     
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("user/favorit")
+    @RolesAllowed("user")
+    public String getFavoritsForUser() throws API_Exception {
+      
+      String thisuser = securityContext.getUserPrincipal().getName();
+        
+        return GSON.toJson(userFACADE.getFavorits(thisuser));
+    }
+    
     
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("tilføj")
-    public String setNewUser(String user) throws IOException, ParseException, API_Exception, AuthenticationException {
+    public String setNewUser(String user) throws AuthenticationException {
           User userToAdd = GSON.fromJson(user, User.class);
           User addedUser = userFACADE.addNewUser(userToAdd);
         return "{\"message\": \"Brugeren " + addedUser.getUserName() + " er nu oprettet"+"\"}";
     }
     
-
+    
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("favorit")
+    public String addFavoritToUser(String favorit) throws API_Exception {
+          Favorit favoritToAdd = GSON.fromJson(favorit, Favorit.class);
+          String thisuser = securityContext.getUserPrincipal().getName();
+  
+          User edditetUser = userFACADE.addFavoritToUser(thisuser, favoritToAdd);
+        return "{\"message\": \"Brugeren " + edditetUser.getUserName() + " er nu opdateret"+"\"}";
+    }
 
 }
