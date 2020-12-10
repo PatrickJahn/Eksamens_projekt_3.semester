@@ -69,10 +69,5 @@ public class FacadeExampleTest {
     
     
     
-    @Test
-    public void testGetAllStoresAndOffers() throws IOException, API_Exception, ParseException {
-          assertTrue(remoteFacade.getAllStoresAndOffers().size() > 0);
-    }
-
-
+    
 }

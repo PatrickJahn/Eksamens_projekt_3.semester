@@ -56,8 +56,6 @@ public class RemoteServerFacade {
     public List<FoodWasteDTO> getAllStoresAndOffers() throws IOException, ParseException, API_Exception{
         
         // Change to take Zip as parameter later in project. For now its just 8000
-
-        
         try {
        
            String url = "https://api.sallinggroup.com/v1/food-waste/?zip=2100"; 
