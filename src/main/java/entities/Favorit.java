@@ -62,6 +62,11 @@ public class Favorit implements Serializable {
         this.storeName = storeName;
     }
 
+    @Override
+    public String toString() {
+        return "{" + "favID=" + favID + ", postnummer=" + postnummer + ", storeName=" + storeName + '}';
+    }
+
     
    
     

@@ -8,6 +8,7 @@ package facades;
 import dto.CombinedDTO;
 import dto.FoodWasteDTO;
 import dto.*;
+import errorhandling.API_Exception;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.AfterEach;
@@ -89,6 +90,26 @@ public class RemoteServerFacadeTest {
       
         // Should return both foodwaste and weather.
         assertTrue(result.getFoodwaste().size() > 0 && result.getVejret() != null);
+    }
+    
+    
+    
+    /** NEGATIVE TEST CASES */ 
+    
+    @Test
+    public void testGetDataFromApiWrongZip() throws API_Exception {
+        System.out.println("getDataFromApi");
+        String zip = "210"; // wrong zip format
+        String city = "Østerport";
+       Exception exception = assertThrows(API_Exception.class, () -> {
+       remoteFacade.getDataFromApi(zip, city);
+    });
+
+    String expectedMessage = "Could not load data. Try antoher zip";
+    String actualMessage = exception.getMessage();
+
+    assertTrue(actualMessage.contains(expectedMessage));
+      
     }
     
 }

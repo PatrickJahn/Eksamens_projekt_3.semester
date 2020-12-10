@@ -134,21 +134,25 @@ public class RemoteServerFacade {
          
          ExecutorService executor = Executors.newCachedThreadPool();
  
-              
-              
-              Future foodWasteFuture = executor.submit(new FoodWasteHandler(foodwasteUrl));
+              try {
+                   Future foodWasteFuture = executor.submit(new FoodWasteHandler(foodwasteUrl));
               Future vejrFuture = executor.submit(new VejrHandler(vejrUrl));
               
               foodwasteDto = (List<FoodWasteDTO>) foodWasteFuture.get();
               vejrDto = (VejrDTO) vejrFuture.get();
              
-         if (foodwasteDto.isEmpty()) {
+              if (foodwasteDto.isEmpty()) {
              throw new API_Exception("Internal failure, service is down.", 400);
          }
+              
+              CombinedDTO combined = new CombinedDTO(foodwasteDto,vejrDto);
+              return combined;
+              
+              } catch (Exception e) {
+                    throw new API_Exception("Could not load data. Try antoher zip ", 400);               
+              }
          
-         CombinedDTO combined = new CombinedDTO(foodwasteDto,vejrDto);
-         
-         return combined;
+   
      }
      
      
